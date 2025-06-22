@@ -4,13 +4,19 @@ import { useNavigate } from "react-router-dom";
 import Imgevent from "../../assets/img/Imgevent.jpg";
 import organizer from "../../assets/img/organizer.jpg";
 
-// Example data structure for universities, faculties, and departments
 const universityData = {
   "Royal University": {
-    faculties: ["Science", "Engineering"],
+    faculties: [
+      "Faculty_of_Science",
+      "Faculty of Engineering",
+      "Faculty of Social Science and Humanities",
+      "Faculty of Development Studies",
+    ],
     departments: {
-      Science: ["Biology", "Chemistry"],
-      Engineering: ["Civil", "Electrical"],
+      Faculty_of_Science: ["Biology", "Chemistry"],
+      "Faculty of Engineering": ["Civil", "Electrical"],
+      "Faculty of Social Science and Humanities": [],
+      "Faculty of Development Studies": [],
     },
   },
   HUS: {
@@ -71,11 +77,79 @@ const InputDesgin = () => {
 
   const [faculties, setFaculties] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const navigate = useNavigate();
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+
+  //   if (name === "university") {
+  //     const selectedFaculties = universityData[value]?.faculties || [];
+  //     setFaculties(selectedFaculties);
+  //     setDepartments([]);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       university: value,
+  //       faculties: "",
+  //       departments: "",
+  //     }));
+  //     return;
+  //   }
+
+  //   if (name === "faculties") {
+  //     const selectedDepartments =
+  //         universityData[formData.university]?.departments[value] || [];
+  //     setDepartments(selectedDepartments);
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       faculties: value,
+  //       departments: "",
+  //     }));
+  //     return;
+  //   }
+
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const payload = {
+  //     first_name: formData.firstName,
+  //     last_name: formData.lastName,
+  //     gender: formData.gender,
+  //     phone_number: formData.phoneNumber,
+  //     university: formData.university,
+  //     faculty: formData.faculties,
+  //     department: formData.departments,
+  //     year: formData.year,
+  //   };
+
+  //   try {
+  //     const response = await fetch("http://localhost:3001/api/students", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(payload),
+  //     });
+
+  //     const result = await response.json();
+
+  //     if (response.ok) {
+  //       navigate("/Register-Success");
+  //     } else {
+  //       alert("❌ Failed: " + result.error);
+  //     }
+  //   } catch (error) {
+  //     alert("❌ Error submitting form.");
+  //     console.error(error);
+  //   }
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // When university changes, update faculties and reset faculty/department
     if (name === "university") {
       const selectedFaculties = universityData[value]?.faculties || [];
       setFaculties(selectedFaculties);
@@ -89,7 +163,6 @@ const InputDesgin = () => {
       return;
     }
 
-    // When faculty changes, update departments and reset department
     if (name === "faculties") {
       const selectedDepartments =
         universityData[formData.university]?.departments[value] || [];
@@ -108,13 +181,40 @@ const InputDesgin = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Add your form submission logic here
+
+    const payload = {
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      gender: formData.gender,
+      phone_number: formData.phoneNumber,
+      university: formData.university,
+      faculty: formData.faculties,
+      department: formData.departments,
+      year: formData.year,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3001/api/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        navigate("/Register-Success");
+      } else {
+        alert("❌ Failed: " + result.error);
+      }
+    } catch (error) {
+      alert("❌ Error submitting form.");
+      console.error(error);
+    }
   };
 
-  const navigate = useNavigate();
   return (
     <>
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#110E5B] text-center py-8">
@@ -122,10 +222,6 @@ const InputDesgin = () => {
       </h1>
       <div className="flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-4xl">
-          {/* Header */}
-          {/* <h1 className="text-3xl sm:text-xl md:text-4xl font-bold text-indigo-950 text-center mb-6 sm:mb-8 md:mb-10">
-          Our Event Supports Girls
-        </h1> */}
           <div className="flex justify-center ">
             <img
               src={organizer}
@@ -133,15 +229,12 @@ const InputDesgin = () => {
               className="w-full max-w-[700px] h-auto object-contain rounded-lg shadow"
             />
           </div>
-          {/* Form Section */}
           <div className="bg-white p-8 rounded-lg shadow-md">
             <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold text-indigo-950 text-opacity-80 mb-8 text-center">
               Please Input Information
             </h2>
-
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                {/* Left Column */}
                 <div className="space-y-6">
                   <div>
                     <label className="block text-gray-700 mb-2">
@@ -169,7 +262,6 @@ const InputDesgin = () => {
                       required
                     />
                   </div>
-
                   <div>
                     <label className="block text-gray-700 mb-2">
                       University
@@ -189,7 +281,6 @@ const InputDesgin = () => {
                       ))}
                     </select>
                   </div>
-
                   <div>
                     <label className="block text-gray-700 mb-2">
                       Faculties
@@ -211,8 +302,6 @@ const InputDesgin = () => {
                     </select>
                   </div>
                 </div>
-
-                {/* Right Column */}
                 <div className="space-y-6">
                   <div>
                     <label className="block text-gray-700 mb-2">
@@ -227,7 +316,6 @@ const InputDesgin = () => {
                       required
                     />
                   </div>
-
                   <div>
                     <label className="block text-gray-700 mb-2">Gender</label>
                     <select
@@ -243,7 +331,6 @@ const InputDesgin = () => {
                       <option value="Other">Other</option>
                     </select>
                   </div>
-
                   <div>
                     <label className="block text-gray-700 mb-2">Year</label>
                     <select
@@ -282,8 +369,6 @@ const InputDesgin = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Submit Button */}
               <div className="flex justify-center">
                 <button
                   type="submit"
@@ -297,7 +382,6 @@ const InputDesgin = () => {
                     !formData.gender ||
                     !formData.year
                   }
-                  onClick={() => navigate("/Register-Success")}
                   className={`px-8 py-4 bg-indigo-950 text-white text-xl font-semibold rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
                     !formData.firstName ||
                     !formData.lastName ||
