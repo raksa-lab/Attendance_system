@@ -1,18 +1,19 @@
-import { Routes, Route } from "react-router-dom";
-import Welcome from "../components/Welcome/welcome";
-import GetStart from "../components/GetStart/Getstart";
-import OnlineRegister from "../components/OnlineRegis/OnlineRegister";
-import ResgisterSuccess from "../components/ResgisterSuccess";
-import InputDesgin from "../components/ResgisterNow/InputDesgin";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
+import OrganizerDashboard from "../Pages/OrganizerDashboard/OrganizerDashboard";
+import Logins from "../components/Login/login";
 
-export default function AppRoutes() {
+function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<Welcome />} />
-      <Route path="/GetStart" element={<GetStart />} />
-      <Route path="/Register" element={<OnlineRegister />} />
-      <Route path="/Register-Now" element={<InputDesgin />} />
-      <Route path="/Register-Success" element={<ResgisterSuccess />} />
-    </Routes>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Logins />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/organizer-dashboard" element={<OrganizerDashboard />} />
+      </Routes>
+    </Router>
   );
 }
+
+export default AppRoutes;

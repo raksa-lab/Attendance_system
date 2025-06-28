@@ -1,19 +1,13 @@
-import { BrowserRouter as Router } from "react-router-dom";
-// import AppRoutes from "../src/routes/routes";
-import Logins from "./components/Login/login.jsx";
-import Login from "./Pages/Login/Login.jsx";
-import { BrowserRouter} from "react-router-dom";
-import UserDashboard from "./Pages/UserDashboard/UserDashboard.jsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RouteOrganizer from "./routes/RouteOrganizer";
+
 function App() {
   return (
-    // <Router>
-    //   <AppRoutes />
-    // </Router>
-    //   <Login/>
-      <BrowserRouter>
-        <UserDashboard/>
-      </BrowserRouter>
-
+    <BrowserRouter>
+      <Routes>
+        <Route path="/organizer/*" element={<RouteOrganizer />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
