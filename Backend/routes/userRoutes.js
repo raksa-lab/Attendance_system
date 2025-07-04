@@ -6,7 +6,7 @@ module.exports = (db) => { // Accept db connection as an argument
   // --- STUDENTS --- //
 
   // GET all students_not_checkin
-  router.get("/students_not_checkins", (req, res) => {
+  router.get("/user/students_not_checkins", (req, res) => {
     db.query("SELECT * FROM students_not_checkin", (err, results) => {
       if (err) {
         console.error("❌ Fetch Students Error:", err);
@@ -17,7 +17,7 @@ module.exports = (db) => { // Accept db connection as an argument
   });
 
   // POST register new student
-  router.post("/students_not_checkins", (req, res) => {
+  router.post("/user/students_not_checkins", (req, res) => {
     const {
       first_name,
       last_name,
@@ -65,7 +65,7 @@ module.exports = (db) => { // Accept db connection as an argument
   });
 
   // PUT update student by ID
-  router.put("/students_not_checkins/:id", (req, res) => {
+  router.put("/user/students_not_checkins/:id", (req, res) => {
     const { id } = req.params;
     const {
       first_name,
@@ -110,7 +110,7 @@ module.exports = (db) => { // Accept db connection as an argument
   });
 
   // DELETE student by ID + auto-increment reset if empty
-  router.delete("/students_not_checkins/:id", (req, res) => {
+  router.delete("/user/students_not_checkins/:id", (req, res) => {
     const { id } = req.params;
     const deleteQuery = "DELETE FROM students_not_checkin WHERE id=?";
 
@@ -144,7 +144,7 @@ module.exports = (db) => { // Accept db connection as an argument
   // --- CHECKINS --- //
 
   // GET all check-ins
-  router.get("/students_checkins", (req, res) => {
+  router.get("/user/students_checkins", (req, res) => {
     db.query("SELECT * FROM students_checkin", (err, results) => {
       if (err) {
         console.error("❌ Fetch Check-ins Error:", err);
@@ -155,7 +155,7 @@ module.exports = (db) => { // Accept db connection as an argument
   });
 
   // POST log check-in with timestamp
-  router.post("/students_checkins", (req, res) => {
+  router.post("/user/students_checkins", (req, res) => {
     const { phone_number } = req.body;
     const query = `INSERT INTO students_checkin (phone_number, checkin_time) VALUES (?, NOW())`;
 
@@ -171,7 +171,7 @@ module.exports = (db) => { // Accept db connection as an argument
   });
 
   // PUT update check-in by ID
-  router.put("/students_checkins/:id", (req, res) => {
+  router.put("/user/students_checkins/:id", (req, res) => {
     const { id } = req.params;
     const { phone_number } = req.body;
 
@@ -191,7 +191,7 @@ module.exports = (db) => { // Accept db connection as an argument
   });
 
   // DELETE check-in by ID + auto-increment reset if empty
-  router.delete("/students_checkins/:id", (req, res) => {
+  router.delete("/user/students_checkins/:id", (req, res) => {
     const { id } = req.params;
     const deleteQuery = "DELETE FROM students_checkin WHERE id=?";
 

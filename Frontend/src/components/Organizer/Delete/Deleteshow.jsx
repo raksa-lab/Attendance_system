@@ -1,15 +1,12 @@
-import React from 'react';
-// import {useNavigate} from 'react-router-dom';
+import React from "react";
+
 export default function Deleteshow({ onDelete, onCancel }) {
-  // const navigate = useNavigate();
-  
-  // Stop click inside modal from closing it
   const stopPropagation = (e) => e.stopPropagation();
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 animate-fadeIn"
-      onClick={onCancel} // clicking outside modal cancels
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onCancel}
     >
       <div
         className="bg-white rounded-lg shadow-lg p-6 w-96"
@@ -17,8 +14,7 @@ export default function Deleteshow({ onDelete, onCancel }) {
       >
         <h2 className="text-xl font-semibold mb-4">Delete Event</h2>
         <p className="mb-4">
-          Are you sure you want to delete this event? This action cannot be
-          undone.
+          Are you sure you want to delete this event? This action cannot be undone.
         </p>
         <div className="flex justify-end space-x-4">
           <button
@@ -38,6 +34,3 @@ export default function Deleteshow({ onDelete, onCancel }) {
     </div>
   );
 }
-
-
-

@@ -7,6 +7,7 @@ const mysqlPromise = require("mysql2/promise"); // For University.js routes
 // Import the modularized route files
 const createUserRoutes = require("./routes/userRoutes");
 const createUniversityRoutes = require("./routes/universityRoutes");
+const OrganizerEventRoutes = require("./routes/OrganizerRoutes");
 
 const app = express();
 const port = 3001;
@@ -99,11 +100,11 @@ const UniversityData = {
 
 // User routes (mounted under /api)
 app.use("/api", createUserRoutes(dbUser));
-
-// University routes (mounted directly or under /university)
-// We get both the router and the init function from the module
+app.use("/api", OrganizerEventRoutes(dbUser));
 const { router: universityRouter, initUniversityDatabase } = createUniversityRoutes(dbUniversityPool, UniversityData);
 app.use("/", universityRouter); // Or app.use("/university", universityRouter); if you want a prefix
+
+ // Organizer routes under /organizer
 
 // Root API is still here
 app.get("/", (req, res) => res.send("🎉 API is running"));

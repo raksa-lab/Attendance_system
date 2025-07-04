@@ -5,6 +5,7 @@ import CreateEvent from "../components/Organizer/CreateEvent/CreateEvent";
 import Update from "../components/Organizer/Update/Update";
 import Delete from "../components/Organizer/Delete/Delete";
 import ViewEvent from "../components/Organizer/ViewEventDetail/ViewEvent";
+import Deleteshow from "../components/Organizer/Delete/Deleteshow";
 
 export default function RouteOrganizer() {
   return (
@@ -16,6 +17,7 @@ export default function RouteOrganizer() {
         <Route path="view-event" element={<ViewEvent />} />
         <Route path="update-event" element={<Update />} />
         <Route path="delete" element={<Delete />} />
+        <Route path="delete/deleteshow" element={<Deleteshow />} />
       </Route>
     </Routes>
   );
