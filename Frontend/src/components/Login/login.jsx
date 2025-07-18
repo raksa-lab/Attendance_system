@@ -1,277 +1,103 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-export default function Logins() {
-    const [formData, setFormData] = useState({
-        username: '',
-        password: '',
-        rememberMe: false,
-        role: 'organizer',
-    });
+export default function Login() {
+  const [isLogin, setIsLogin] = useState(true);
 
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value,
-        }));
-    };
-
-    const handleRoleChange = (role) => {
-        setFormData((prev) => ({ ...prev, role }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
-    };
-
-    const togglePasswordVisibility = () => {
-        setShowPassword((prev) => !prev);
-    };
-
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 sm:px-6 lg:px-8">
-            <div className="w-full max-w-sm sm:max-w-md p-6 bg-white shadow-md rounded-lg">
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#110E5B] text-center mb-6">
-                    Welcome To 
-                </h1>
-
-                {/* Role Selection */}
-                <div className="flex gap-3 mb-6">
-                    <button
-                        type="button"
-                        onClick={() => handleRoleChange('organizer')}
-                        className={`flex-1 py-2 rounded-lg border-2 transition ${
-                            formData.role === 'organizer'
-                                ? 'border-[#110E5B] text-[#110E5B] font-semibold'
-                                : 'border-gray-300 text-gray-600'
-                        }`}
-                    >
-                        Organizer
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => handleRoleChange('admin')}
-                        className={`flex-1 py-2 rounded-lg border-2 transition ${
-                            formData.role === 'admin'
-                                ? 'border-[#110E5B] text-[#110E5B] font-semibold'
-                                : 'border-gray-300 text-gray-600'
-                        }`}
-                    >
-                        Admin
-                    </button>
-                </div>
-
-                {/* Login Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#110E5B]"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#110E5B] pr-10"
-                                required
-                            />
-                            <button
-                                type="button"
-                                onClick={togglePasswordVisibility}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500"
-                            >
-                                {showPassword ? '🙈' : '👁️'}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex items-center">
-                        <input
-                            type="checkbox"
-                            name="rememberMe"
-                            checked={formData.rememberMe}
-                            onChange={handleChange}
-                            className="h-4 w-4 text-[#110E5B] border-gray-300 rounded"
-                        />
-                        <label className="ml-2 block text-sm text-gray-900">Remember me</label>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full py-2 bg-[#110E5B] text-white rounded-md hover:bg-indigo-950 font-semibold transition"
-                    >
-                        Login
-                    </button>
-                </form>
-            </div>
+  return (
+    <div className="flex items-center justify-center h-screen bg-[#e0e5ec]">
+      <div className="bg-[#e0e5ec] p-8 rounded-2xl shadow-[10px_10px_30px_#c2c8d0,-10px_-10px_30px_#ffffff] w-80">
+        <div className="flex justify-between mb-6">
+          <button
+            onClick={() => setIsLogin(true)}
+            className={`flex-1 py-2 font-bold rounded-xl transition duration-300 ${
+              isLogin
+                ? "bg-[#d1d9e6] shadow-inner shadow-[inset_2px_2px_5px_#bec4cb,inset_-2px_-2px_5px_#f0f5fa]"
+                : ""
+            }`}
+          >
+            Login
+          </button>
+          <button
+            onClick={() => setIsLogin(false)}
+            className={`flex-1 py-2 font-bold rounded-xl transition duration-300 ${
+              !isLogin
+                ? "bg-[#d1d9e6] shadow-inner shadow-[inset_2px_2px_5px_#bec4cb,inset_-2px_-2px_5px_#f0f5fa]"
+                : ""
+            }`}
+          >
+            Register
+          </button>
         </div>
-    );
+
+        {isLogin ? (
+          <form className="flex flex-col">
+            <input
+              type="email"
+              placeholder="Email"
+              required
+              defaultValue="annaschawdhary157@gmail.com"
+              className="my-2 py-3 px-4 rounded-xl border-none bg-[#e0e5ec] shadow-inner shadow-[inset_4px_4px_6px_#c8ccd1,inset_-4px_-4px_6px_#f0f5fa]"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              className="my-2 py-3 px-4 rounded-xl border-none bg-[#e0e5ec] shadow-inner shadow-[inset_4px_4px_6px_#c8ccd1,inset_-4px_-4px_6px_#f0f5fa]"
+            />
+            <button
+              type="submit"
+              className="mt-3 py-3 bg-[#e0e5ec] rounded-xl font-bold shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] hover:bg-[#d6dce4] transition"
+            >
+              Login
+            </button>
+            <p className="text-center my-3 text-sm text-gray-600">Or continue with</p>
+            <div className="flex justify-around">
+              <button className="w-10 h-10 rounded-full bg-[#e0e5ec] shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] text-lg">G</button>
+              <button className="w-10 h-10 rounded-full bg-[#e0e5ec] shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] text-lg">f</button>
+              <button className="w-10 h-10 rounded-full bg-[#e0e5ec] shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] text-lg">t</button>
+            </div>
+          </form>
+        ) : (
+          <form className="flex flex-col">
+            <input
+              type="text"
+              placeholder="Full Name"
+              required
+              className="my-2 py-3 px-4 rounded-xl border-none bg-[#e0e5ec] shadow-inner shadow-[inset_4px_4px_6px_#c8ccd1,inset_-4px_-4px_6px_#f0f5fa]"
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              required
+              className="my-2 py-3 px-4 rounded-xl border-none bg-[#e0e5ec] shadow-inner shadow-[inset_4px_4px_6px_#c8ccd1,inset_-4px_-4px_6px_#f0f5fa]"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              className="my-2 py-3 px-4 rounded-xl border-none bg-[#e0e5ec] shadow-inner shadow-[inset_4px_4px_6px_#c8ccd1,inset_-4px_-4px_6px_#f0f5fa]"
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              required
+              className="my-2 py-3 px-4 rounded-xl border-none bg-[#e0e5ec] shadow-inner shadow-[inset_4px_4px_6px_#c8ccd1,inset_-4px_-4px_6px_#f0f5fa]"
+            />
+            <button
+              type="submit"
+              className="mt-3 py-3 bg-[#e0e5ec] rounded-xl font-bold shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] hover:bg-[#d6dce4] transition"
+            >
+              Register
+            </button>
+            <p className="text-center my-3 text-sm text-gray-600">Or sign up with</p>
+            <div className="flex justify-around">
+              <button className="w-10 h-10 rounded-full bg-[#e0e5ec] shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] text-lg">G</button>
+              <button className="w-10 h-10 rounded-full bg-[#e0e5ec] shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] text-lg">f</button>
+              <button className="w-10 h-10 rounded-full bg-[#e0e5ec] shadow-[6px_6px_10px_#c2c8d0,-6px_-6px_10px_#ffffff] text-lg">t</button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
 }
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import axios from "axios";
-// import { useNavigate } from "react-router-dom";
-
-// export default function Logins() {
-//   const [formData, setFormData] = useState({
-//     username: "",
-//     password: "",
-//     rememberMe: false,
-//     role: "organizer",
-//   });
-
-//   const [showPassword, setShowPassword] = useState(false);
-//   const navigate = useNavigate();
-
-//   const handleChange = (e) => {
-//     const { name, value, type, checked } = e.target;
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: type === "checkbox" ? checked : value,
-//     }));
-//   };
-
-//   const handleRoleChange = (role) => {
-//     setFormData((prev) => ({ ...prev, role }));
-//   };
-
-//   const togglePasswordVisibility = () => {
-//     setShowPassword((prev) => !prev);
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     try {
-//       const res = await axios.post("http://localhost:3001/login", {
-//         username: formData.username,
-//         password: formData.password,
-//       });
-
-//       localStorage.setItem("token", res.data.token);
-
-//       if (res.data.role === "admin") {
-//         navigate("/admin-dashboard");
-//       } else if (res.data.role === "organizer") {
-//         navigate("/organizer-dashboard");
-//       }
-//     } catch (err) {
-//       alert(err.response?.data?.error || "Login failed");
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 sm:px-6 lg:px-8">
-//       <div className="w-full max-w-sm sm:max-w-md p-6 bg-white shadow-md rounded-lg">
-//         <h1 className="text-2xl sm:text-3xl font-bold text-[#110E5B] text-center mb-6">
-//           Welcome To
-//         </h1>
-
-//         {/* Role Selection */}
-//         <div className="flex gap-3 mb-6">
-//           <button
-//             type="button"
-//             onClick={() => handleRoleChange("organizer")}
-//             className={`flex-1 py-2 rounded-lg border-2 transition ${
-//               formData.role === "organizer"
-//                 ? "border-[#110E5B] text-[#110E5B] font-semibold"
-//                 : "border-gray-300 text-gray-600"
-//             }`}
-//           >
-//             Organizer
-//           </button>
-//           <button
-//             type="button"
-//             onClick={() => handleRoleChange("admin")}
-//             className={`flex-1 py-2 rounded-lg border-2 transition ${
-//               formData.role === "admin"
-//                 ? "border-[#110E5B] text-[#110E5B] font-semibold"
-//                 : "border-gray-300 text-gray-600"
-//             }`}
-//           >
-//             Admin
-//           </button>
-//         </div>
-
-//         {/* Login Form */}
-//         <form onSubmit={handleSubmit} className="space-y-4">
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
-//               Username
-//             </label>
-//             <input
-//               type="text"
-//               name="username"
-//               value={formData.username}
-//               onChange={handleChange}
-//               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#110E5B]"
-//               required
-//             />
-//           </div>
-
-//           <div>
-//             <label className="block text-sm font-medium text-gray-700 mb-1">
-//               Password
-//             </label>
-//             <div className="relative">
-//               <input
-//                 type={showPassword ? "text" : "password"}
-//                 name="password"
-//                 value={formData.password}
-//                 onChange={handleChange}
-//                 className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#110E5B] pr-10"
-//                 required
-//               />
-//               <button
-//                 type="button"
-//                 onClick={togglePasswordVisibility}
-//                 className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500"
-//               >
-//                 {showPassword ? "🙈" : "👁️"}
-//               </button>
-//             </div>
-//           </div>
-
-//           <div className="flex items-center">
-//             <input
-//               type="checkbox"
-//               name="rememberMe"
-//               checked={formData.rememberMe}
-//               onChange={handleChange}
-//               className="h-4 w-4 text-[#110E5B] border-gray-300 rounded"
-//             />
-//             <label className="ml-2 block text-sm text-gray-900">Remember me</label>
-//           </div>
-
-//           <button
-//             type="submit"
-//             className="w-full py-2 bg-[#110E5B] text-white rounded-md hover:bg-indigo-950 font-semibold transition"
-//           >
-//             Login
-//           </button>
-//         </form>
-//       </div>
-//     </div>
-//   );
-// }

@@ -2,7 +2,8 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = (dbPool, universityData) => { // Accept dbPool and universityData as arguments
+module.exports = (dbPool, universityData) => {
+  // Accept dbPool and universityData as arguments
   // Initialize University Database Tables and Data
   async function initUniversityDatabase() {
     let connection;
@@ -68,19 +69,26 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
   // --- API Routes ---
 
   // Universities
-  router.get("/", (req, res) => res.send("🎉 University API is running")); // Specific route for this module
+  router.get("/", (req, res) => res.send("🎉 University API is running")); 
 
-  router.get("/universities", async (req, res) => {
+  router.get("/api/get/universities", async (req, res) => {
     try {
       const [rows] = await dbPool.query("SELECT * FROM universities");
-      res.json(rows);
+
+      // Reset ID only in response (not database)
+      const resetRows = rows.map((row, index) => ({
+        ...row,
+        id: index + 1, // Overwrite original id with new sequential id
+      }));
+
+      res.json(resetRows);
     } catch (error) {
       console.error("❌ Fetch Universities Error:", error);
       res.status(500).json({ error: "Failed to fetch universities" });
     }
   });
 
-  router.post("/universities", async (req, res) => {
+  router.post("/api/post/universities", async (req, res) => {
     try {
       const { name } = req.body;
       await dbPool.query("INSERT INTO universities (name) VALUES (?)", [name]);
@@ -91,11 +99,14 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.put("/universities/:id", async (req, res) => {
+  router.put("/api/put/universities/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const { name } = req.body;
-      await dbPool.query("UPDATE universities SET name = ? WHERE id = ?", [name, id]);
+      await dbPool.query("UPDATE universities SET name = ? WHERE id = ?", [
+        name,
+        id,
+      ]);
       res.json({ message: "University updated" });
     } catch (error) {
       console.error("❌ Update University Error:", error);
@@ -103,7 +114,7 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.delete("/universities/:id", async (req, res) => {
+  router.delete("/api/delete/universities/:id", async (req, res) => {
     try {
       const { id } = req.params;
       await dbPool.query("DELETE FROM universities WHERE id = ?", [id]);
@@ -115,10 +126,13 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
   });
 
   // Faculties
-  router.get("/faculties/:university_id", async (req, res) => {
+  router.get("/api/faculties/:university_id", async (req, res) => {
     try {
       const { university_id } = req.params;
-      const [rows] = await dbPool.query("SELECT * FROM faculties WHERE university_id = ?", [university_id]);
+      const [rows] = await dbPool.query(
+        "SELECT * FROM faculties WHERE university_id = ?",
+        [university_id]
+      );
       res.json(rows);
     } catch (error) {
       console.error("❌ Fetch Faculties Error:", error);
@@ -126,10 +140,13 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.post("/faculties", async (req, res) => {
+  router.post("/api/faculties", async (req, res) => {
     try {
       const { university_id, name } = req.body;
-      await dbPool.query("INSERT INTO faculties (university_id, name) VALUES (?, ?)", [university_id, name]);
+      await dbPool.query(
+        "INSERT INTO faculties (university_id, name) VALUES (?, ?)",
+        [university_id, name]
+      );
       res.json({ message: "Faculty added" });
     } catch (error) {
       console.error("❌ Add Faculty Error:", error);
@@ -137,11 +154,14 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.put("/faculties/:id", async (req, res) => {
+  router.put("/api/faculties/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const { name } = req.body;
-      await dbPool.query("UPDATE faculties SET name = ? WHERE id = ?", [name, id]);
+      await dbPool.query("UPDATE faculties SET name = ? WHERE id = ?", [
+        name,
+        id,
+      ]);
       res.json({ message: "Faculty updated" });
     } catch (error) {
       console.error("❌ Update Faculty Error:", error);
@@ -149,7 +169,7 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.delete("/faculties/:id", async (req, res) => {
+  router.delete("/api/faculties/:id", async (req, res) => {
     try {
       const { id } = req.params;
       await dbPool.query("DELETE FROM faculties WHERE id = ?", [id]);
@@ -161,10 +181,13 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
   });
 
   // Departments
-  router.get("/departments/:faculty_id", async (req, res) => {
+  router.get("/api/departments/:faculty_id", async (req, res) => {
     try {
       const { faculty_id } = req.params;
-      const [rows] = await dbPool.query("SELECT * FROM departments WHERE faculty_id = ?", [faculty_id]);
+      const [rows] = await dbPool.query(
+        "SELECT * FROM departments WHERE faculty_id = ?",
+        [faculty_id]
+      );
       res.json(rows);
     } catch (error) {
       console.error("❌ Fetch Departments Error:", error);
@@ -172,10 +195,13 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.post("/departments", async (req, res) => {
+  router.post("/api/departments", async (req, res) => {
     try {
       const { faculty_id, name } = req.body;
-      await dbPool.query("INSERT INTO departments (faculty_id, name) VALUES (?, ?)", [faculty_id, name]);
+      await dbPool.query(
+        "INSERT INTO departments (faculty_id, name) VALUES (?, ?)",
+        [faculty_id, name]
+      );
       res.json({ message: "Department added" });
     } catch (error) {
       console.error("❌ Add Department Error:", error);
@@ -183,11 +209,14 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.put("/departments/:id", async (req, res) => {
+  router.put("/api/departments/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const { name } = req.body;
-      await dbPool.query("UPDATE departments SET name = ? WHERE id = ?", [name, id]);
+      await dbPool.query("UPDATE departments SET name = ? WHERE id = ?", [
+        name,
+        id,
+      ]);
       res.json({ message: "Department updated" });
     } catch (error) {
       console.error("❌ Update Department Error:", error);
@@ -195,7 +224,7 @@ module.exports = (dbPool, universityData) => { // Accept dbPool and universityDa
     }
   });
 
-  router.delete("/departments/:id", async (req, res) => {
+  router.delete("/api/departments/:id", async (req, res) => {
     try {
       const { id } = req.params;
       await dbPool.query("DELETE FROM departments WHERE id = ?", [id]);

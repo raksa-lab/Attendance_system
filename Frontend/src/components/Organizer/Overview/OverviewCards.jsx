@@ -4,15 +4,33 @@ import axios from "axios";
 
 const OverviewCards = () => {
   const [eventCount, setEventCount] = useState(0);
+  const [totalMembers, setTotalMembers] = useState(0);
 
   useEffect(() => {
+    // Fetch events
     axios.get("http://localhost:3001/api/Organizer")
       .then((response) => {
-        setEventCount(response.data.length); // Assuming it's an array of events
+        setEventCount(response.data.length);
       })
       .catch((error) => {
         console.error("Error fetching event data:", error);
       });
+
+    // Fetch members (checked-in + not checked-in)
+    const fetchMembers = async () => {
+      try {
+        const [checkedRes, notCheckedRes] = await Promise.all([
+          axios.get("http://localhost:3001/api/user/students_checkIns"),
+          axios.get("http://localhost:3001/api/user/students_not_checkins"),
+        ]);
+        const total = checkedRes.data.length + notCheckedRes.data.length;
+        setTotalMembers(total);
+      } catch (error) {
+        console.error("Error fetching member data:", error);
+      }
+    };
+
+    fetchMembers();
   }, []);
 
   return (
@@ -46,7 +64,9 @@ const OverviewCards = () => {
         </div>
         <div>
           <p className="text-gray-500 text-xs sm:text-sm">Members</p>
-          <p className="text-2xl sm:text-3xl font-bold text-gray-800">1,893</p>
+          <p className="text-2xl sm:text-3xl font-bold text-gray-800">
+            {totalMembers.toLocaleString()}
+          </p>
         </div>
       </div>
     </section>

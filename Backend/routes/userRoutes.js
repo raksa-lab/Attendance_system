@@ -155,20 +155,40 @@ module.exports = (db) => { // Accept db connection as an argument
   });
 
   // POST log check-in with timestamp
+  // router.post("/user/students_checkins", (req, res) => {
+  //   const { phone_number } = req.body;
+  //   const query = `INSERT INTO students_checkin (phone_number, checkin_time) VALUES (?, NOW())`;
+
+  //   db.query(query, [phone_number], (err, result) => {
+  //     if (err) {
+  //       console.error("❌ Insert Check-in Error:", err.sqlMessage || err);
+  //       return res.status(500).json({ error: err.sqlMessage || "Insert failed" });
+  //     }
+  //     res
+  //       .status(201)
+  //       .json({ message: "Check-in successful", id: result.insertId });
+  //   });
+  // });
+
   router.post("/user/students_checkins", (req, res) => {
     const { phone_number } = req.body;
-    const query = `INSERT INTO students_checkin (phone_number, checkin_time) VALUES (?, NOW())`;
-
+    if (!phone_number) {
+        return res.status(400).json({ error: "phone_number is required" });
+    }
+    const query = `INSERT INTO students_checkin (phone_number, checked_in_at) VALUES (?, NOW())`;
     db.query(query, [phone_number], (err, result) => {
-      if (err) {
-        console.error("❌ Insert Check-in Error:", err.sqlMessage || err);
-        return res.status(500).json({ error: err.sqlMessage || "Insert failed" });
-      }
-      res
-        .status(201)
-        .json({ message: "Check-in successful", id: result.insertId });
+        if (err) {
+            console.error("❌ Insert Check-in Error:", err.sqlMessage || err);
+            return res.status(500).json({ error: err.sqlMessage || "Insert failed" });
+        }
+        res
+            .status(201)
+            .json({
+                message: "Check-in successful",
+                id: result.insertId 
+            });
     });
-  });
+});
 
   // PUT update check-in by ID
   router.put("/user/students_checkins/:id", (req, res) => {

@@ -56,20 +56,20 @@ app.post("/create-organizer", async (req, res) => {
   });
 });
 
-// GET UNAPPROVED ORGANIZERS (for admin)
-app.get("/unapproved", (req, res) => {
-  db.query("SELECT id, username FROM users WHERE role = 'organizer' AND is_approved = FALSE", (err, result) => {
-    if (err) return res.status(500).json({ error: "DB error" });
-    res.json(result);
-  });
-});
 
-// APPROVE ORGANIZER (admin action)
+// APPROVE ORGANIZER (admin act
+// // GET UNAPPROVED ORGANIZERS (for admin)
+// app.get("/unapproved", (req, res) => {
+//   db.query("SELECT id, username FROM users WHERE role = 'organizer' AND is_approved = FALSE", (err, result) => {
+//     if (err) return res.status(500).json({ error: "DB error" });
+//     res.json(result);
+//   });
+// });ion)
 app.post("/approve", (req, res) => {
-  const { id } = req.body;
+  const {id} = req.body;
   db.query("UPDATE users SET is_approved = TRUE WHERE id = ?", [id], (err) => {
-    if (err) return res.status(500).json({ error: "Approval error" });
-    res.json({ message: "Organizer approved." });
+    if (err) return res.status(500).json({error: "Approval error"});
+    res.json({message: "Organizer approved."});
   });
 });
 
